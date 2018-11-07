@@ -1,0 +1,20 @@
+index:
+    path: /
+    controller: App\Controller\TechNews\IndexController::index
+
+# Le RedirectController va effectuer une redirection sans avoir
+# à passer par un contrôleur personnalisé...
+accueil:
+    path: /accueil
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: index
+        permanent: true
+
+# Permet d'éviter la création d'un controlleur personnalisé
+# pour nos page static. Contact, Présention, Mentions Légales, ...
+mentions_legales:
+    path:         /mentions-legales
+    controller:   Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    defaults:
+        template: static/mentionslegales.html.twig

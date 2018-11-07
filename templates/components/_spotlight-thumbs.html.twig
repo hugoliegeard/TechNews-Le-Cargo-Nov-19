@@ -1,0 +1,20 @@
+<div class="col-md-4 col-sm-4 col-xs-12">
+    <div class="spotlight-item-thumb">
+        <div class="spotlight-item-thumb-img">
+            <a href="#">
+                <img alt="{{ article.titre }}" src="{{ asset('images/product/'~article.featuredimage) }}"/>
+            </a>
+            <a href="#" class="cate-tag">{{ article.categorie.libelle }}</a>
+        </div>
+        <h3><a href="#">{{ article.titre | title }}</a></h3>
+        <div class="meta-post">
+            <a href="#">
+                {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
+            </a>
+            <em></em>
+            <span>
+                {{ article.datecreation | date('d/m/Y') }}
+            </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div>
+    <article class="spotlight-item">
+        <div class="spotlight-img">
+            <img alt="{{ article.titre }}"
+                 src="{{ asset('images/product/'~article.featuredimage) }}"
+                 class="img-responsive"/>
+            <a href="{{ path('index_categorie', {
+                categorie: article.categorie.libelle | lower
+            }) }}" class="cate-tag">
+                {{ article.categorie.libelle }}
+            </a>
+        </div>
+        <div class="spotlight-item-caption">
+            <h2 class="font-heading">
+                <a href="javascript:void(0)">
+                    {{ article.titre | title }}
+                </a>
+            </h2>
+            <div class="meta-post">
+                <a href="javascript:void(0)">
+                    {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
+                </a>
+                <em></em>
+                <span>
+                    {{ article.datecreation | date('d/m/Y') }}
+                </span>
+            </div>
+            {# Accroche ici #}
+        </div>
+    </article>
+</div>
