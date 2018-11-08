@@ -6,7 +6,7 @@
                 slug: article.slug,
                 id: article.id
             }) }}">
-                <img alt="{{ article.titre }}" src="{{ asset('images/product/'~article.featuredimage) }}"/>
+                <img alt="{{ article.titre }}" src="{{ asset('images/product/'~article.featuredImage) }}">
             </a>
             <a href="{{ path('index_categorie', {
                 slug: article.categorie.slug

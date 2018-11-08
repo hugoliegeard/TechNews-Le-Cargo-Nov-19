@@ -5,20 +5,24 @@
                  src="{{ asset('images/product/'~article.featuredimage) }}"
                  class="img-responsive"/>
             <a href="{{ path('index_categorie', {
-                categorie: article.categorie.libelle | lower
+                slug: article.categorie.slug
             }) }}" class="cate-tag">
-                {{ article.categorie.libelle }}
+                {{ article.categorie.nom }}
             </a>
         </div>
         <div class="spotlight-item-caption">
             <h2 class="font-heading">
-                <a href="javascript:void(0)">
+                <a href="{{ path('index_article', {
+                    categorie: article.categorie.slug,
+                    slug: article.slug,
+                    id: article.id
+                }) }}">
                     {{ article.titre | title }}
                 </a>
             </h2>
             <div class="meta-post">
                 <a href="javascript:void(0)">
-                    {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
+                    {{ article.membre.prenom ~ ' ' ~ article.membre.nom }}
                 </a>
                 <em></em>
                 <span>

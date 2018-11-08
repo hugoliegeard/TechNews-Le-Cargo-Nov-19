@@ -21,10 +21,8 @@
         </div>
         <!--spotlight-->
         <section class="owl-carousel owl-spotlight">
-            {% for article in articles %}
-                {% if article.spotlight %}
-                    {% include 'components/_spotlight.html.twig' %}
-                {% endif %}
+            {% for article in spotlight %}
+                {% include 'components/_spotlight.html.twig' %}
             {% endfor %}
         </section>
 
@@ -40,6 +38,6 @@
 
     {# Sidebar #}
     {% include 'components/_sidebar.html.twig' %}
-    
+
     {% endblock %}
 

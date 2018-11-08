@@ -4,6 +4,8 @@ namespace App\Controller\TechNews;
 
 
 use App\Article\Provider\YamlProvider;
+use App\Entity\Article;
+use App\Entity\Categorie;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,30 +21,64 @@ class IndexController extends Controller
     public function index(YamlProvider $yamlProvider)
     {
 
+        $repository = $this->getDoctrine()
+            ->getRepository(Article::class);
+
         # Récupération des Articles depuis YamlProvider
-        $articles = $yamlProvider->getArticles();
+        # $articles = $yamlProvider->getArticles();
+        $articles = $repository->findAll();
+        $spotlight = $repository->findSpotlightArticles();
         # dump($articles);
 
         # return new Response("<html><body><h1>PAGE D'ACCUEIL</h1></body></html>");
         return $this->render('index/index.html.twig', [
-            'articles' => $articles
+            'articles' => $articles,
+            'spotlight' => $spotlight
         ]);
     }
 
     /**
      * Page permettant d'afficher les articles
      * d'une catégorie.
-     * @Route("/categorie/{categorie<\w+>}",
+     * @Route("/categorie/{slug<\w+>}",
      *     name="index_categorie",
-     *     defaults={"categorie":"breaking-news"},
-     *     requirements={"categorie"="\w+"},
+     *     defaults={"slug":"breaking-news"},
+     *     requirements={"slug"="\w+"},
      *     methods={"GET"})
-     * @param $categorie
+     * @param Categorie $categorie
+     * @param $slug
      * @return Response
      */
-    public function categorie($categorie)
+    public function categorie(Categorie $categorie = null, $slug)
     {
-        return $this->render('index/categorie.html.twig');
+
+        # Récupération de la catégorie
+
+        # 1ère méthode
+        # $categorie = $this->getDoctrine()
+        #     ->getRepository(Categorie::class)
+        #     ->findOneBy(['slug' => $categorie]);
+
+        # 2ème méthode
+        # $articles = $this->getDoctrine()
+        #     ->getRepository(Categorie::class)
+        #     ->findOneBySlug($slug)
+        #     ->getArticles()
+        # ;
+
+        if (null === $categorie) {
+
+            # On redirige l'utilisateur sur la page d'accueil
+            return $this->redirectToRoute('index',[], Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        # Récupérer les articles de la catégorie
+        $articles = $categorie->getArticles();
+
+        return $this->render('index/categorie.html.twig', [
+            'categorie' => $categorie,
+            'articles' => $articles
+        ]);
         # return new Response("<html><body><h1>PAGE CATEGORIE : $categorie</h1></body></html>");
     }
 
@@ -50,14 +86,40 @@ class IndexController extends Controller
      * Afficher un Article
      * @Route("/{categorie<\w+>}/{slug}_{id<\d+>}.html",
      *     name="index_article")
-     * @param $categorie
-     * @param $slug
-     * @param $id
+     * @param Article $article
      * @return Response
      */
-    public function article($categorie, $slug, $id)
+    public function article(Article $article = null, $id)
     {
+        # Exemple d'url
         #/politique/le-marechal-petain-a-ete-un-grand-soldat_4567898.html
-        return $this->render("index/article.html.twig");
+
+        # $article = $this->getDoctrine()
+        #     ->getRepository(Article::class)
+        #     ->find($id);
+
+        if (null === $article) {
+
+            # On génère une exception...
+            # throw $this->createNotFoundException(
+            #     'Nous n\'avons pas trouvé votre article ID : ' . $id
+            # );
+
+            # Ou, on redirige l'utilisateur sur la page d'accueil
+            return $this->redirectToRoute('index',[], Response::HTTP_MOVED_PERMANENTLY);
+
+            # On pourrait vérifier également, l'intégrité de l'url.
+        }
+
+        # Récupération des suggestions
+        $suggestions = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findArticlesSuggestions($article->getId(), $article->getCategorie()->getId());
+
+        # Transmission des données à la vue
+        return $this->render("index/article.html.twig", [
+            'article' => $article,
+            'suggestions' => $suggestions
+        ]);
     }
 }
