@@ -1,3 +1,6 @@
+{#{{ dump(articles) }}#}
+{#{{ dump(specials) }}#}
+
 <!--colright-->
 <div class="col-md-4 col-sm-12">
     <!--tab popular-->
@@ -11,82 +14,32 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="tab1">
             <ul class="list-news-popular">
-                <li>
-                    <a href="#">
-                        <img alt="" src="images/product/8.jpg">
-                    </a>
-                    <h3><a href="#">Netflix Speeds Jumped 51% This Year</a></h3>
-                    <div class="meta-post">
-                        <a href="#">
-                            Ashley Ford
-
+                {% for article in articles %}
+                    <li>
+                        <a href="{{ path('index_article', {
+                            categorie: article.categorie.slug,
+                            slug: article.slug,
+                            id: article.id
+                        }) }}">
+                            <img alt="{{ article.titre | title }}"
+                                 src="{{ asset('images/product/'~article.featuredImage) }}">
                         </a>
-                        <em></em>
-                        <span>
-							24 Aug  2016
-						</span>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">
-                        <img alt="" src="images/product/9.jpg">
-                    </a>
-                    <h3><a href="#">Uber wants to build planes to beat city traffic</a></h3>
-                    <div class="meta-post">
-                        <a href="#">
-                            Karla	Walters
-                        </a>
-                        <em></em>
-                        <span>
-							04 Sep  2016
-						</span>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">
-                        <img alt="" src="images/product/10.jpg">
-                    </a>
-                    <h3><a href="#">Apple reportedly prototyping their Amazon Echo competitor</a></h3>
-                    <div class="meta-post">
-                        <a href="#">
-                            Super User
-                        </a>
-                        <em></em>
-                        <span>
-							01 Sep  2016
-						</span>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">
-                        <img alt="" src="images/product/11.jpg">
-                    </a>
-                    <h3><a href="#">Watch out: That USB stick in your mailbox might be infected</a></h3>
-                    <div class="meta-post">
-                        <a href="#">
-                            Sue	Benson
-                        </a>
-                        <em></em>
-                        <span>
-							27 Aug  2016
-						</span>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">
-                        <img alt="" src="images/product/13.jpg">
-                    </a>
-                    <h3><a href="#">Tumblr brings Apple’s ‘Live Photos’ to the web</a></h3>
-                    <div class="meta-post">
-                        <a href="#">
-                            Super User
-                        </a>
-                        <em></em>
-                        <span>
-							15 Sep 2016
-						</span>
-                    </div>
-                </li>
+                        <h3><a href="{{ path('index_article', {
+                                categorie: article.categorie.slug,
+                                slug: article.slug,
+                                id: article.id
+                            }) }}">{{ article.titre | title }}</a></h3>
+                        <div class="meta-post">
+                            <a href="#">
+                                {{ article.membre.prenom ~ ' ' ~ article.membre.nom }}
+                            </a>
+                            <em></em>
+                            <span>
+                                {{ article.dateCreation | date('d/m/Y') }}
+                            </span>
+                        </div>
+                    </li>
+                {% endfor %}
             </ul>
 
         </div>
@@ -96,7 +49,7 @@
     <div class="subcribe-box">
         <h3>NEWSLETTER</h3>
         <p>Inscrivez-vous pour recevoir nos dernières publications.</p>
-        <input type="text" placeholder="Votre Email..." />
+        <input type="text" placeholder="Votre Email..."/>
         <button class="my-btn">Je m'inscris</button>
     </div>
     <!-- connect us-->
@@ -148,22 +101,32 @@
 			</span>
         </div>
         <div class="list-special">
-            <article class="news-two-large">
-                <a href="#">
-                    <img alt="" src="images/product/4.jpg">
-                </a>
-                <h3><a href="#">Six big ways MacOS Sierra is going to change your Apple experience</a></h3>
-                <div class="meta-post">
-                    <a href="#">
-                        Sue	Benson
+            {% for article in specials %}
+                <article class="news-two-large">
+                    <a href="{{ path('index_article', {
+                        categorie: article.categorie.slug,
+                        slug: article.slug,
+                        id: article.id
+                    }) }}">
+                        <img alt="{{ article.titre | title }}" src="{{ asset('images/product/'~article.featuredImage) }}">
                     </a>
-                    <em></em>
-                    <span>
-						23 Sep 2016
+                    <h3><a href="{{ path('index_article', {
+                            categorie: article.categorie.slug,
+                            slug: article.slug,
+                            id: article.id
+                        }) }}">{{ article.titre | title }}</a></h3>
+                    <div class="meta-post">
+                        <a href="#">
+                            {{ article.membre.prenom ~ ' ' ~ article.membre.nom }}
+                        </a>
+                        <em></em>
+                        <span>
+						{{ article.dateCreation | date('d/m/Y') }}
 					</span>
-                </div>
+                    </div>
 
-            </article>
+                </article>
+            {% endfor %}
         </div>
     </div>
 </div>

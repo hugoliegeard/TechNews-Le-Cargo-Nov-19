@@ -5,21 +5,13 @@
             <li>
                 <a href="{{ path('index') }}">Accueil </a>
             </li>
-            <li>
-                <a href="{{ path('index_categorie', {
-                    slug: 'business'
-                }) }}">Business</a>
-            </li>
-            <li>
-                <a href="{{ path('index_categorie', {
-                    slug: 'computing'
-                }) }}">Computing</a>
-            </li>
-            <li>
-                <a href="{{ path('index_categorie', {
-                    slug: 'tech'
-                }) }}">Tech </a>
-            </li>
+            {% for categorie in categories %}
+                <li>
+                    <a href="{{ path('index_categorie', {
+                        slug: categorie.slug
+                    }) }}">{{ categorie.nom }}</a>
+                </li>
+            {% endfor %}
         </ul>
     </div>
 </nav>
@@ -42,24 +34,17 @@
                 <span>MENU</span>
             </div>
             <ul class="hidden-sm hidden-xs">
-                <li>
+                <li {% if active == 'index' %}class="current"{% endif %}>
                     <a href="{{ path('index') }}">Accueil </a>
                 </li>
-                <li>
-                    <a href="{{ path('index_categorie', {
-                        slug: 'business'
-                    }) }}">Business</a>
-                </li>
-                <li>
-                    <a href="{{ path('index_categorie', {
-                        slug: 'computing'
-                    }) }}">Computing</a>
-                </li>
-                <li>
-                    <a href="{{ path('index_categorie', {
-                        slug: 'tech'
-                    }) }}">Tech </a>
-                </li>
+                {% for categorie in categories %}
+                    <li {{ active == categorie.slug ? 'class="current"' }}>
+                        <a href="{{ path('index_categorie', {
+                            slug: categorie.slug
+                        }) }}">{{ categorie.nom }}</a>
+                    </li>
+                {% endfor %}
+
             </ul>
             <div class="search-icon">
                 <div class="search-icon-inner">

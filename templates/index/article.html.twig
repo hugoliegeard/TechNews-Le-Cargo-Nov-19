@@ -4,6 +4,8 @@
     {{ article.titre | title }}
 {% endblock %}
 
+{% set active = article.categorie.slug %}
+
 {% block content %}
 
     {#{{ dump(article) }}
@@ -96,8 +98,9 @@
         </div>
         
         {# Sidebar #}
-        {% include 'components/_sidebar.html.twig' %}
-        
+        {#{% include 'components/_sidebar.html.twig' %}#}
+        {{ render(controller('App\\Controller\\TechNews\\IndexController::sidebar')) }}
+
     </div>
 {% endblock %}
 

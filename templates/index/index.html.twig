@@ -1,5 +1,7 @@
 {% extends "layout.html.twig" %}
 
+{% set active = 'index' %}
+
 {% block page_title %}
     Accueil
 {% endblock %}
@@ -37,7 +39,8 @@
     </div>
 
     {# Sidebar #}
-    {% include 'components/_sidebar.html.twig' %}
+    {#{% include 'components/_sidebar.html.twig' %}#}
+    {{ render(controller('App\\Controller\\TechNews\\IndexController::sidebar')) }}
 
     {% endblock %}
 

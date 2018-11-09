@@ -1,5 +1,7 @@
 {% extends 'layout.html.twig' %}
 
+{% set active = categorie.slug %}
+
 {% block page_title %}
     {{ categorie.nom | title }}
 {% endblock %}
@@ -47,7 +49,7 @@
                                         {{ article.dateCreation | date('d/m/Y') }}
                                     </span>
                                     </div>
-                                    {# ici repose une accroche #}
+                                    {{ article.contenu | summary }}
                                 </div>
                             </div>
                         </article>
@@ -76,7 +78,8 @@
 
         </div>
         {# Sidebar #}
-        {% include 'components/_sidebar.html.twig' %}
+        {#{% include 'components/_sidebar.html.twig' %}#}
+        {{ render(controller('App\\Controller\\TechNews\\IndexController::sidebar')) }}
     </div>
 {% endblock %}
 
