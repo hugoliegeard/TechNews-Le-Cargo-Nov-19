@@ -2,21 +2,23 @@
 
 namespace App\Controller\TechNews;
 
+use App\Article\ArticleRequest;
+use App\Article\ArticleRequestHandler;
+use App\Article\ArticleType;
+use App\Controller\HelperTrait;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Membre;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends Controller
 {
+
+    use HelperTrait;
+
     /**
      * Démonstration de l'ajout d'une
      * article avec Doctrine. (Data Mapper).
@@ -60,11 +62,11 @@ class ArticleController extends Controller
 
         return new Response(
             'Nouvel Article ID : '
-            .$article->getId()
-            .' dans la catégorie : '
-            .$categorie->getNom()
-            .' de l\'auteur '
-            .$membre->getPrenom()
+            . $article->getId()
+            . ' dans la catégorie : '
+            . $categorie->getNom()
+            . ' de l\'auteur '
+            . $membre->getPrenom()
         );
     }
 
@@ -73,8 +75,12 @@ class ArticleController extends Controller
      *
      * @Route("/creer-un-article",
      *     name="article_new")
+     * @param Request $request
+     * @param ArticleRequestHandler $articleRequestHandler
+     * @return Response
      */
-    public function newArticle()
+    public function newArticle(Request $request,
+                               ArticleRequestHandler $articleRequestHandler)
     {
         # Récupération de l'auteur | ou en session
         $membre = $this->getDoctrine()
@@ -82,76 +88,59 @@ class ArticleController extends Controller
             ->find(1);
 
         # Création d'un Article
-        $article = new Article();
-        $article->setMembre($membre);
+        # $article = new Article();
+        # $article->setMembre($membre);
         # $article->setTitre('Symfony c\'est génial !');
+        $article = new ArticleRequest($membre);
 
         # Créer un Formulaire permettant l'ajout d'un Article
-        $form = $this->createFormBuilder($article)
+        $form = $this->createForm(ArticleType::class, $article)
+            ->handleRequest($request);
 
-            # Champ TITRE
-            ->add('titre', TextType::class, [
-                'required'  => true,
-                'label'     => "Titre de l'article",
-                'attr'      => [
-                    'placeholder'   => "Titre de l'Article"
-                ]
-            ])
+        # Traitement des données POST
+        # $form->handleRequest($request);
 
-            # Champ CATEGORIE
-            ->add('categorie', EntityType::class, [
-                'class'         => Categorie::class,
-                'choice_label'  => 'nom',
-                'expanded'      => false,
-                'multiple'      => false,
-                'label'     => false
-            ])
+        # Vérification des données du Formulaire
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            # Champ CONTENU
-            ->add('contenu', CKEditorType::class, [
-                'required'  => true,
-                'label'     => false,
-                'config'    => [
-                    'toolbar' => 'standard'
-                ]
-            ])
+            # Récupération des données
+            /** @var Article $article */
+            # $article = $form->getData();
+            # dump($article);
 
-            # Champ FEATUREDIMAGE
-            ->add('featuredimage', FileType::class, [
-                'required'  => false,
-                'label'     => false,
-                'attr' => [
-                    'class' => 'dropify'
-                ]
-            ])
+            /**
+             * Une fois le formulaire soumit et valide,
+             * on passe nos données directement au service
+             * qui se chargera du traitement de l'article.
+             */
+            $article = $articleRequestHandler->handle($article);
 
-            # Champs SPECIAL & SPOTLIGHT
-            ->add('special', CheckboxType::class, [
-                'required' => false,
-                'attr' => [
-                    'data-toggle' => 'toggle',
-                    'data-on' => 'Oui',
-                    'data-off' => 'Non'
-                ]
-            ])
-            ->add('spotlight', CheckboxType::class, [
-                'required' => false,
-                'attr' => [
-                    'data-toggle' => 'toggle',
-                    'data-on' => 'Oui',
-                    'data-off' => 'Non'
-                ]
-            ])
-            # Bouton Submit
-            ->add('submit', SubmitType::class, [
-                'label' => 'Publier mon Article'
-            ])
+            # On s'assure que l'article n'est pas null
+            if (null !== $article) {
+                # Flash Messages
+                $this->addFlash('notice',
+                    'Félicitations, votre article est en ligne !');
 
-        ->getForm();
+                # Redirection vers l'article
+                return $this->redirectToRoute('index_article', [
+                    'categorie' => $article->getCategorie()->getSlug(),
+                    'slug' => $article->getSlug(),
+                    'id' => $article->getId()
+                ]);
+            } else {
+
+                # Flash Messages
+                $this->addFlash('error',
+                    'Une erreur est survenue. Vérifiez vos informations.');
+
+            }
+
+
+        }
 
         # Affichage du Formulaire dans la Vue
         return $this->render('article/form.html.twig', [
-           'form' => $form->createView()
+            'form' => $form->createView()
         ]);
     }
 }
