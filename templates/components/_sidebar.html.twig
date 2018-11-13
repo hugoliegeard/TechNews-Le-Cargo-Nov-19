@@ -3,6 +3,44 @@
 
 <!--colright-->
 <div class="col-md-4 col-sm-12">
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+        <h3 class="text-center">
+            Bonjour {{ app.user.prenom }}
+        </h3>
+
+        <h4 class="text-center">
+
+            {% if is_granted('ROLE_ADMIN') %}
+                Administrateur
+            {% elseif is_granted('ROLE_EDITEUR') %}
+                Editeur
+            {% elseif is_granted('ROLE_AUTEUR') %}
+                Auteur
+            {% else %}
+                Membre
+            {% endif %}
+            
+        </h4>
+
+        <ul class="list-group">
+            {% if is_granted('ROLE_AUTEUR') %}
+                <li class="list-group-item">
+                    <a href="{{ path('article_new') }}">
+                        Rédiger un Article
+                    </a>
+                </li>
+            {% endif %}
+            <li class="list-group-item">
+                <a href="{{ path('security_deconnexion') }}">
+                    Déconnexion
+                </a>
+            </li>
+        </ul>
+
+    {% endif %}
+
     <!--tab popular-->
     <ul role="tablist" class="tab-popular">
         <li class="active">
@@ -93,40 +131,42 @@
         </ul>
     </div>
 
-    <!-- special post-->
-    <div class="connect-us">
-        <div class="widget-title">
-			<span>
-				En Avant
-			</span>
-        </div>
-        <div class="list-special">
-            {% for article in specials %}
-                <article class="news-two-large">
-                    <a href="{{ path('index_article', {
-                        categorie: article.categorie.slug,
-                        slug: article.slug,
-                        id: article.id
-                    }) }}">
-                        <img alt="{{ article.titre | title }}" src="{{ asset('images/product/'~article.featuredImage) }}">
-                    </a>
-                    <h3><a href="{{ path('index_article', {
+    {% if specials is not empty %}
+        <!-- special post-->
+        <div class="connect-us">
+            <div class="widget-title">
+                <span>
+                    En Avant
+                </span>
+            </div>
+            <div class="list-special">
+                {% for article in specials %}
+                    <article class="news-two-large">
+                        <a href="{{ path('index_article', {
                             categorie: article.categorie.slug,
                             slug: article.slug,
                             id: article.id
-                        }) }}">{{ article.titre | title }}</a></h3>
-                    <div class="meta-post">
-                        <a href="#">
-                            {{ article.membre.prenom ~ ' ' ~ article.membre.nom }}
+                        }) }}">
+                            <img alt="{{ article.titre | title }}" src="{{ asset('images/product/'~article.featuredImage) }}">
                         </a>
-                        <em></em>
-                        <span>
-						{{ article.dateCreation | date('d/m/Y') }}
-					</span>
-                    </div>
+                        <h3><a href="{{ path('index_article', {
+                                categorie: article.categorie.slug,
+                                slug: article.slug,
+                                id: article.id
+                            }) }}">{{ article.titre | title }}</a></h3>
+                        <div class="meta-post">
+                            <a href="#">
+                                {{ article.membre.prenom ~ ' ' ~ article.membre.nom }}
+                            </a>
+                            <em></em>
+                            <span>
+                            {{ article.dateCreation | date('d/m/Y') }}
+                        </span>
+                        </div>
 
-                </article>
-            {% endfor %}
+                    </article>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 </div>

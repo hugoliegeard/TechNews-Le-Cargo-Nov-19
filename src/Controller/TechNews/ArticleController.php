@@ -9,6 +9,7 @@ use App\Controller\HelperTrait;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Membre;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,6 +76,7 @@ class ArticleController extends Controller
      *
      * @Route("/creer-un-article",
      *     name="article_new")
+     * @Security("has_role('ROLE_AUTEUR')")
      * @param Request $request
      * @param ArticleRequestHandler $articleRequestHandler
      * @return Response
