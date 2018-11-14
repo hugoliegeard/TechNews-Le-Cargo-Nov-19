@@ -4,6 +4,7 @@ namespace App\Controller\TechNews;
 
 use App\Article\ArticleRequest;
 use App\Article\ArticleRequestHandler;
+use App\Article\ArticleRequestUpdateHandler;
 use App\Article\ArticleType;
 use App\Controller\HelperTrait;
 use App\Entity\Article;
@@ -11,6 +12,7 @@ use App\Entity\Categorie;
 use App\Entity\Membre;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -145,4 +147,60 @@ class ArticleController extends Controller
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * Editer / Modifier un Article
+     * @Route("/editer-un-article/{id<\d+>}",
+     *     name="article_edit")
+     * @Security("article.isAuteur(user) or has_role('ROLE_EDITEUR')    ")
+     * @param Article $article
+     * @param Request $request
+     * @param Packages $packages
+     * @param ArticleRequestUpdateHandler $updateHandler
+     * @return Response
+     */
+    public function editArticle(
+        Article $article,
+        Request $request,
+        Packages $packages,
+        ArticleRequestUpdateHandler $updateHandler
+    )
+    {
+
+        # Récupération de ArticleRequest depuis Article
+        $ar = ArticleRequest::createFromArticle(
+            $article,
+            $this->getParameter('articles_dir'),
+            $this->getParameter('articles_assets_dir'),
+            $packages
+        );
+
+        # Création du Formulaire
+        $options = [
+            'image_url' => $ar->getImageUrl()
+        ];
+
+        $form = $this->createForm(ArticleType::class, $ar, $options)
+            ->handleRequest($request);
+
+        # Vérification des données du Formulaire
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            # Traitement et Sauvegarde des données
+            $article = $updateHandler->handle($ar, $article);
+
+            # Flash Message
+            $this->addFlash('notice', 'Modification Effectuée !');
+
+            return $this->redirectToRoute('article_edit', [
+                'id' => $article->getId()
+            ]);
+        }
+
+        # Affichage du Formulaire dans la vue
+        return $this->render('article/form.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
 }

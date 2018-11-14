@@ -11,12 +11,22 @@
     <div class="row">
         <div class="col-xs-10 col-xs-offset-1">
             <h3>Rédiger un Article</h3>
+
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
             {% for message in app.flashes('error') %}
                 <div class="alert alert-danger">
                     {{ message }}
                 </div>
             {% endfor %}
-            {{ form(form) }}
+
+            {% form_theme form 'form/article.html.twig' %}
+            {{ form(form, {attr: {novalidate: 'novalidate'}}) }}
+
         </div>
     </div>
 

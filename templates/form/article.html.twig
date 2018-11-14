@@ -1,0 +1,27 @@
+{% block form %}
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.titre) }}
+
+        {% if form.slug is defined %}
+            {{ form_row(form.slug) }}
+        {% endif %}
+
+        {{ form_row(form.categorie) }}
+        {{ form_row(form.contenu) }}
+        {{ form_row(form.featuredimage) }}
+
+        <div class="row">
+            <div class="col-xs-6">
+                {{ form_row(form.special) }}
+            </div>
+            <div class="col-xs-6">
+                {{ form_row(form.spotlight) }}
+            </div>
+        </div>
+
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+
+{% endblock %}

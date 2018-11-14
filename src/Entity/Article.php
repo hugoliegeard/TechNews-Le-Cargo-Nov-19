@@ -79,8 +79,8 @@ class Article
      * @param string $slug
      * @param string $contenu
      * @param string $featuredImage
-     * @param string $special
-     * @param string $spotlight
+     * @param bool $special
+     * @param bool $spotlight
      * @param Categorie $categorie
      * @param Membre $membre
      * @param \DateTime $dateCreation
@@ -92,8 +92,8 @@ class Article
         string $slug,
         string $contenu,
         string $featuredImage,
-        string $special,
-        string $spotlight,
+        bool $special,
+        bool $spotlight,
         Categorie $categorie,
         Membre $membre,
         \DateTime $dateCreation
@@ -113,6 +113,25 @@ class Article
         $article->dateCreation = $dateCreation;
 
         return $article;
+    }
+
+    public function update(
+        string $titre,
+        string $slug,
+        string $contenu,
+        string $featuredImage,
+        bool $special,
+        bool $spotlight,
+        Categorie $categorie
+    )
+    {
+        $this->titre = $titre;
+        $this->slug = $slug;
+        $this->contenu = $contenu;
+        $this->featuredImage = $featuredImage;
+        $this->special = $special;
+        $this->spotlight = $spotlight;
+        $this->categorie = $categorie;
     }
 
     public function getId(): ?int
@@ -236,5 +255,8 @@ class Article
         $this->membre = $membre;
     }
 
+    public function isAuteur(?Membre $membre = null): bool {
+        return $membre && $this->getMembre()->getId() === $membre->getId();
+    }
 
 }

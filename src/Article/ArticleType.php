@@ -2,8 +2,7 @@
 
 namespace App\Article;
 
-
-use App\Entity\Article;
+use App\Article\EventListener\ArticleTypeSlugFieldSubscriber;
 use App\Entity\Categorie;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -13,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArticleType extends AbstractType
@@ -24,7 +25,6 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
             # Champ TITRE
             ->add('titre', TextType::class, [
                 'required' => true,
@@ -54,7 +54,8 @@ class ArticleType extends AbstractType
                 'required' => true,
                 'label' => false,
                 'attr' => [
-                    'class' => 'dropify'
+                    'class' => 'dropify',
+                    'data-default-file' => $options['image_url']
                 ]
             ])
             # Champs SPECIAL & SPOTLIGHT
@@ -78,7 +79,10 @@ class ArticleType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Publier mon Article'
             ])
+
+            ->addEventSubscriber(new ArticleTypeSlugFieldSubscriber())
         ;
+
     }
 
     /**
@@ -88,7 +92,8 @@ class ArticleType extends AbstractType
     {
         $resolver->setDefaults([
             #'data_class' => Article::class
-            'data_class' => ArticleRequest::class
+            'data_class' => ArticleRequest::class,
+            'image_url' => null
         ]);
     }
 

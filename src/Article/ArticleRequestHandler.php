@@ -37,21 +37,25 @@ class ArticleRequestHandler
         /** @var UploadedFile $image */
         $image = $request->getFeaturedImage();
 
-        # Nom du Fichier
-        $fileName = $this->slugify($request->getTitre())
-            . '.' . $image->guessExtension();
+        if (null !== $image) {
+            # Nom du Fichier
+            $fileName = $this->slugify($request->getTitre())
+                . '.' . $image->guessExtension();
 
-        try {
-            $image->move(
-                $this->articleAssetsDir,
-                $fileName
-            );
-        } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
+            try {
+                $image->move(
+                    $this->articleAssetsDir,
+                    $fileName
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            # Mise à jour de l'image
+            $request->setFeaturedImage($fileName);
+        } else {
+            return null;
         }
-
-        # Mise à jour de l'image
-        $request->setFeaturedImage($fileName);
 
         # Mise à jour du slug
         $request->setSlug($this->slugify($request->getTitre()));
