@@ -67,38 +67,52 @@ class Article
 
     /**
      * Article constructor.
-     * @param $id
-     * @param $titre
-     * @param $slug
-     * @param $contenu
-     * @param $featuredImage
-     * @param $special
-     * @param $spotlight
-     * @param $categorie
-     * @param $membre
-     * @param $dateCreation
      */
-    public function __construct($id = null,
-                                $titre,
-                                $slug,
-                                $contenu,
-                                $featuredImage,
-                                $special,
-                                $spotlight,
-                                $categorie,
-                                $membre,
-                                $dateCreation)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->titre = $titre;
-        $this->slug = $slug;
-        $this->contenu = $contenu;
-        $this->featuredImage = $featuredImage;
-        $this->special = $special;
-        $this->spotlight = $spotlight;
-        $this->categorie = $categorie;
-        $this->membre = $membre;
-        $this->dateCreation = $dateCreation;
+    }
+
+    /**
+     * Créer et Retourne un Objet Article
+     * @param int|null $id
+     * @param string $titre
+     * @param string $slug
+     * @param string $contenu
+     * @param string $featuredImage
+     * @param string $special
+     * @param string $spotlight
+     * @param Categorie $categorie
+     * @param Membre $membre
+     * @param \DateTime $dateCreation
+     * @return Article
+     */
+    public static function create(
+        ?int $id = null,
+        string $titre,
+        string $slug,
+        string $contenu,
+        string $featuredImage,
+        string $special,
+        string $spotlight,
+        Categorie $categorie,
+        Membre $membre,
+        \DateTime $dateCreation
+    )
+    {
+        $article = new self();
+
+        $article->id = $id;
+        $article->titre = $titre;
+        $article->slug = $slug;
+        $article->contenu = $contenu;
+        $article->featuredImage = $featuredImage;
+        $article->special = $special;
+        $article->spotlight = $spotlight;
+        $article->categorie = $categorie;
+        $article->membre = $membre;
+        $article->dateCreation = $dateCreation;
+
+        return $article;
     }
 
     public function getId(): ?int

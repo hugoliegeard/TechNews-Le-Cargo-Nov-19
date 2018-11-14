@@ -68,6 +68,31 @@ class Membre implements UserInterface
         $this->dateInscription = new \DateTime();
     }
 
+    public static function create(
+        ?int $id = null,
+        string $prenom,
+        string $nom,
+        string $email,
+        string $password,
+        array $roles,
+        ?\DateTime $dateInscription = null,
+        ?\DateTime $derniereConnexion = null
+    )
+    {
+        $membre = new self();
+
+        $membre->id = $id;
+        $membre->prenom = $prenom;
+        $membre->nom = $nom;
+        $membre->email = $email;
+        $membre->password = $password;
+        $membre->roles = $roles;
+        $membre->dateInscription = $dateInscription;
+        $membre->derniereConnexion = $derniereConnexion;
+
+        return $membre;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

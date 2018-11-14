@@ -25,7 +25,7 @@ class IndexController extends Controller
 
         // Récupération des Articles depuis YamlProvider
         // $articles = $yamlProvider->getArticles();
-        $articles = $repository->findAll();
+        $articles = $repository->findBy([], ['id' => 'DESC']);
         $spotlight = $repository->findSpotlightArticles();
         // dump($articles);
 

@@ -2,9 +2,9 @@
 ###> symfony/framework-bundle ###
 /.env
 /public/bundles/
+/public/output/
 /var/
 /vendor/
-/public/output/
 ###< symfony/framework-bundle ###
 
 ###> symfony/web-server-bundle ###

@@ -163,4 +163,12 @@ class MembreRequest
         }
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getDateInscription(): \DateTime
+    {
+        return $this->dateInscription;
+    }
+
 }

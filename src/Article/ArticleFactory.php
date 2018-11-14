@@ -15,7 +15,7 @@ class ArticleFactory
      */
     public function createFromArticleRequest(ArticleRequest $request): Article
     {
-        return new Article(
+        return Article::create(
             $request->getId(),
             $request->getTitre(),
             $request->getSlug(),

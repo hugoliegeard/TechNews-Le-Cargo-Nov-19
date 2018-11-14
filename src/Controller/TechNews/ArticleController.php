@@ -85,15 +85,15 @@ class ArticleController extends Controller
                                ArticleRequestHandler $articleRequestHandler)
     {
         # Récupération de l'auteur | ou en session
-        $membre = $this->getDoctrine()
-            ->getRepository(Membre::class)
-            ->find(1);
+        # $membre = $this->getDoctrine()
+        #     ->getRepository(Membre::class)
+        #     ->find(1);
 
         # Création d'un Article
         # $article = new Article();
         # $article->setMembre($membre);
         # $article->setTitre('Symfony c\'est génial !');
-        $article = new ArticleRequest($membre);
+        $article = new ArticleRequest($this->getUser());
 
         # Créer un Formulaire permettant l'ajout d'un Article
         $form = $this->createForm(ArticleType::class, $article)
