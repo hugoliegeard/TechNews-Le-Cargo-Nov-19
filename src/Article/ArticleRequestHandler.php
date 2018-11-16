@@ -6,6 +6,7 @@ namespace App\Article;
 use App\Controller\HelperTrait;
 use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -14,19 +15,22 @@ class ArticleRequestHandler
 
     use HelperTrait;
 
-    private $em, $articleAssetsDir, $articleFactory;
+    private $em, $articleAssetsDir, $articleFactory, $dispatcher;
 
     /**
      * ArticleRequestHandler constructor.
      * @param EntityManagerInterface $entityManager
      * @param ArticleFactory $articleFactory
+     * @param EventDispatcherInterface $dispatcher
      * @param string $articleAssetsDir
      */
     public function __construct(EntityManagerInterface $entityManager,
                                 ArticleFactory $articleFactory,
+                                EventDispatcherInterface $dispatcher,
                                 string $articleAssetsDir)
     {
         $this->em = $entityManager;
+        $this->dispatcher = $dispatcher;
         $this->articleFactory = $articleFactory;
         $this->articleAssetsDir = $articleAssetsDir;
     }
@@ -62,6 +66,9 @@ class ArticleRequestHandler
 
         # Appel de la Factory
         $article = $this->articleFactory->createFromArticleRequest($request);
+
+        # Dispatch
+        $this->dispatcher->dispatch(ArticleEvents::ARTICLE_CREATED, new ArticleEvent($article));
 
         # Sauvegarde Doctrine
         $this->em->persist($article);

@@ -1,0 +1,6 @@
+[submodule "vendor/bundles/CL/Bundle/SlackBundle"]
+	path = vendor/bundles/CL/Bundle/SlackBundle
+	url = https://github.com/cleentfaar/CLSlackBundle.git
+[submodule "vendor/bundles/CL/Slack"]
+	path = vendor/bundles/CL/Slack
+	url = https://github.com/cleentfaar/slack.git
