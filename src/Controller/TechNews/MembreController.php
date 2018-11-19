@@ -20,11 +20,14 @@ class MembreController extends Controller
 {
     /**
      * Inscription d'un Utilisateur
-     * @Route("/inscription",
-     *     name="membre_inscription",
+     * @Route({
+     *     "fr": "/inscription",
+     *     "en": "/register"
+     * }, name="membre_inscription",
      *     methods={"GET", "POST"})
      * @param Request $request
      * @param MembreRequestHandler $membreRequestHandler
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function inscription(Request $request, MembreRequestHandler $membreRequestHandler)
     {

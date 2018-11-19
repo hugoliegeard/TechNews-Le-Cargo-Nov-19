@@ -3,13 +3,13 @@
 {% set active = 'inscription' %}
 
 {% block page_title %}
-    Inscription
+    {% trans from 'navigation' %}nav.register{% endtrans %}
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2">
-            <h3>Inscription</h3>
+            <h3>{% trans from 'navigation' %}nav.register{% endtrans %}</h3>
             {{ form(form, {attr: {novalidate: 'novalidate'}}) }}
         </div>
     </div>

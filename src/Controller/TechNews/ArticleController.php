@@ -76,8 +76,10 @@ class ArticleController extends Controller
     /**
      * Formulaire pour ajouter un Article.
      *
-     * @Route("/creer-un-article",
-     *     name="article_new")
+     * @Route({
+     *     "fr": "/creer-un-article",
+     *     "en": "/new-article"
+     * }, name="article_new")
      * @Security("has_role('ROLE_AUTEUR')")
      * @param Request $request
      * @param ArticleRequestHandler $articleRequestHandler
@@ -150,8 +152,10 @@ class ArticleController extends Controller
 
     /**
      * Editer / Modifier un Article
-     * @Route("/editer-un-article/{id<\d+>}",
-     *     name="article_edit")
+     * @Route({
+     *     "fr": "/editer-un-article/{id<\d+>}",
+     *     "en": "/edit-article/{id<\d+>}"
+     * }, name="article_edit")
      * @Security("article.isAuteur(user) or has_role('ROLE_EDITEUR')    ")
      * @param Article $article
      * @param Request $request

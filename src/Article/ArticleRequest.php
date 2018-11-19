@@ -14,24 +14,24 @@ class ArticleRequest
     private $id;
 
     /**
-     * @Assert\NotBlank(message="Vous devez saisir un titre")
+     * @Assert\NotBlank(message="asserts.article.notblank.title")
      * @Assert\Length(
      *     max="255",
-     *     maxMessage="Votre titre est trop long. Pas plus de {{ limit }} caractères."
+     *     maxMessage="asserts.article.length.max.title"
      * )
      */
     private $titre;
     private $slug;
 
     /**
-     * @Assert\NotBlank(message="N'oubliez pas votre article. Ce serait ballot...")
+     * @Assert\NotBlank(message="asserts.article.notblank.content")
      */
     private $contenu;
 
     /**
      * @Assert\Image(
-     *     mimeTypesMessage="Vérifiez le format de votre fichier. Uniquement des images.",
-     *     maxSize="2M", maxSizeMessage="Votre image est trop lourde. Pas plus de 2M."
+     *     mimeTypesMessage="asserts.article.image.mimetype",
+     *     maxSize="2M", maxSizeMessage="asserts.article.image.maxsize"
      * )
      */
     private $featuredImage;
@@ -40,7 +40,7 @@ class ArticleRequest
     private $spotlight;
 
     /**
-     * @Assert\NotNull(message="N'oubliez pas de choisir une catégorie")
+     * @Assert\NotNull(message="asserts.article.category.notnull")
      */
     private $categorie;
     private $membre;

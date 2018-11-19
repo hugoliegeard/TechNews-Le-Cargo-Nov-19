@@ -22,39 +22,39 @@ class MembreType extends AbstractType
         $builder
 
             ->add('prenom', TextType::class, [
-                'label' => 'Votre prénom :',
+                'label' => 'form.register.firstname',
                 'attr'  => [
-                    'placeholder' => 'Prénom...'
+                    'placeholder' => 'form.placeholder.firstname'
                 ]
             ])
             ->add('nom', TextType::class, [
-                'label' => 'Votre nom :',
+                'label' => 'form.register.lastname',
                 'attr'  => [
-                    'placeholder' => 'Nom...'
+                    'placeholder' => 'form.placeholder.lastname'
                 ]
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Votre email :',
+                'label' => 'form.register.email',
                 'attr'  => [
-                    'placeholder' => 'Email...'
+                    'placeholder' => 'form.placeholder.email'
                 ]
             ])
             ->add('password', PasswordType::class, [
-                'label' => 'Votre mot de passe :',
+                'label' => 'form.register.password',
                 'attr'  => [
-                    'placeholder' => 'Mot de passe...'
+                    'placeholder' => 'form.placeholder.password'
                 ]
             ])
             ->add('conditions', CheckboxType::class, [
-                'label' => 'J\'accepte les CGU',
+                'label' => 'form.register.cgu',
                 'attr'  => [
                     'data-toggle' => 'toggle',
-                    'data-on' => 'Oui',
-                    'data-off' => 'Non',
+                    'data-on' => 'form.register.cgu.on',
+                    'data-off' => 'form.register.cgu.off',
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Je m\'inscris !'
+                'label' => 'form.register.submit'
             ])
         ;
     }
@@ -65,7 +65,8 @@ class MembreType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => MembreRequest::class
+            'data_class' => MembreRequest::class,
+            'translation_domain' => 'forms'
         ]);
     }
 

@@ -1,6 +1,9 @@
 index:
-    path: /
+    path: /{_locale}
     controller: App\Controller\TechNews\IndexController::index
+    defaults: { _locale: '%locale%' }
+    requirements:
+        _locale: en|fr
 
 # Le RedirectController va effectuer une redirection sans avoir
 # à passer par un contrôleur personnalisé...

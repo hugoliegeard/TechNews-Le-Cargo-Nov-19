@@ -1,5 +1,6 @@
 {#{{ dump(articles) }}#}
 {#{{ dump(specials) }}#}
+{% trans_default_domain 'sidebar' %}
 
 <!--colright-->
 <div class="col-md-4 col-sm-12">
@@ -7,19 +8,19 @@
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
         <h3 class="text-center">
-            Bonjour {{ app.user.prenom }}
+            {{ 'sidebar.hello' | trans }} {{ app.user.prenom }}
         </h3>
 
         <h4 class="text-center">
 
             {% if is_granted('ROLE_ADMIN') %}
-                Administrateur
+                {% trans from 'roles' %}role.admin{% endtrans %}
             {% elseif is_granted('ROLE_EDITEUR') %}
-                Editeur
+                {% trans from 'roles' %}role.editor{% endtrans %}
             {% elseif is_granted('ROLE_AUTEUR') %}
-                Auteur
+                {% trans from 'roles' %}role.author{% endtrans %}
             {% else %}
-                Membre
+                {% trans from 'roles' %}role.member{% endtrans %}
             {% endif %}
             
         </h4>
@@ -39,20 +40,20 @@
             %}
                 <li class="list-group-item">
                     <a href="{{ path('article_edit', { 'id' : article.id }) }}">
-                        Editer cet Article
+                        {{ 'sidebar.article.edit' | trans }}
                     </a>
                 </li>
             {% endif %}
             {% if is_granted('ROLE_AUTEUR') %}
                 <li class="list-group-item">
                     <a href="{{ path('article_new') }}">
-                        Rédiger un Article
+                        {{ 'sidebar.article.new' | trans }}
                     </a>
                 </li>
             {% endif %}
             <li class="list-group-item">
                 <a href="{{ path('security_deconnexion') }}">
-                    Déconnexion
+                    {% trans from 'navigation' %}nav.logout{% endtrans %}
                 </a>
             </li>
         </ul>
@@ -63,7 +64,7 @@
     <ul role="tablist" class="tab-popular">
         <li class="active">
             <a href="#tab1" role="tab" data-toggle="tab">
-                DERNI&Egrave;RE PUBLICATIONS
+                {{ 'sidebar.lastpublications' | trans }}
             </a>
         </li>
     </ul>
@@ -103,16 +104,16 @@
 
     <!-- subcribe box-->
     <div class="subcribe-box">
-        <h3>NEWSLETTER</h3>
-        <p>Inscrivez-vous pour recevoir nos dernières publications.</p>
-        <input type="text" placeholder="Votre Email..."/>
-        <button class="my-btn">Je m'inscris</button>
+        <h3>{{ 'sidebar.newsletter.title' | trans }}</h3>
+        <p>{{ 'sidebar.newsletter.description' | trans }}</p>
+        <input type="text" placeholder="{{ 'sidebar.newsletter.placeholder' | trans }}"/>
+        <button class="my-btn">{{ 'sidebar.newsletter.btn' | trans }}</button>
     </div>
     <!-- connect us-->
     <div class="connect-us">
         <div class="widget-title">
 			<span>
-				SUIVEZ-NOUS
+				{{ 'sidebar.social.followus' | trans }}
 			</span>
         </div>
         <ul class="list-social-icon">
@@ -154,7 +155,7 @@
         <div class="connect-us">
             <div class="widget-title">
                 <span>
-                    En Avant
+                    {{ 'sidebar.special.title' | trans }}
                 </span>
             </div>
             <div class="list-special">

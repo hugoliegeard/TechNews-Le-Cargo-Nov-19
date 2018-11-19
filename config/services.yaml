@@ -6,7 +6,7 @@
 parameters:
     articles_dir: 'images/product'
     articles_assets_dir: '%kernel.project_dir%/public/%articles_dir%'
-    locale: 'en'
+    locale: 'fr'
 
 services:
     # default configuration for services in *this* file
