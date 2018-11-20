@@ -2,9 +2,11 @@
 
 namespace App\Controller\TechNews;
 
+use App\Article\ArticleCatalogue;
 use App\Article\Provider\YamlProvider;
 use App\Entity\Article;
 use App\Entity\Categorie;
+use App\Exception\DuplicateCatalogueArticleException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,18 +18,20 @@ class IndexController extends Controller
      *
      * @param YamlProvider $yamlProvider
      *
+     * @param ArticleCatalogue $catalogue
      * @return Response
      */
-    public function index(YamlProvider $yamlProvider)
+    public function index(YamlProvider $yamlProvider, ArticleCatalogue $catalogue)
     {
         $repository = $this->getDoctrine()
             ->getRepository(Article::class);
 
         // Récupération des Articles depuis YamlProvider
         // $articles = $yamlProvider->getArticles();
-        $articles = $repository->findBy([], ['id' => 'DESC']);
+        # $articles = $repository->findBy([], ['id' => 'DESC']);
+        $articles = $catalogue->findAll();
         $spotlight = $repository->findSpotlightArticles();
-        // dump($articles);
+         dump($articles);
 
         // return new Response("<html><body><h1>PAGE D'ACCUEIL</h1></body></html>");
         return $this->render('index/index.html.twig', [
@@ -91,14 +95,16 @@ class IndexController extends Controller
     /**
      * Afficher un Article.
      *
-     * @Route("/{_locale}/{categorie<\w+>}/{slug}_{id<\d+>}.html",
-     *     name="index_article", defaults={"_locale": "fr"})
+     * @Route("/{_locale}/{categorie<\w+>}/{slug}_{id<\d+>}-{sourceId<\d+>}.html",
+     *     name="index_article", defaults={"_locale": "fr", "sourceId": "644751"})
      *
-     * @param Article $article
-     *
+     * @param ArticleCatalogue $catalogue
+     * @param $id
      * @return Response
+     * @internal param Article $article
+     *
      */
-    public function article(Article $article = null, $id)
+    public function article(ArticleCatalogue $catalogue, $id, $sourceId)
     {
         // Exemple d'url
         ///politique/le-marechal-petain-a-ete-un-grand-soldat_4567898.html
@@ -107,16 +113,22 @@ class IndexController extends Controller
         //     ->getRepository(Article::class)
         //     ->find($id);
 
-        if (null === $article) {
+        //if (null === $article) {
             // On génère une exception...
             // throw $this->createNotFoundException(
             //     'Nous n\'avons pas trouvé votre article ID : ' . $id
             // );
 
             // Ou, on redirige l'utilisateur sur la page d'accueil
-            return $this->redirectToRoute('index', [], Response::HTTP_MOVED_PERMANENTLY);
+            //return $this->redirectToRoute('index', [], Response::HTTP_MOVED_PERMANENTLY);
 
             // On pourrait vérifier également, l'intégrité de l'url.
+        //}
+
+        try {
+            $article = $catalogue->find($id, $sourceId);
+        } catch (DuplicateCatalogueArticleException $catalogueArticleException) {
+            return $this->redirectToRoute('index', [], Response::HTTP_MOVED_PERMANENTLY);
         }
 
         // Récupération des suggestions
@@ -131,14 +143,15 @@ class IndexController extends Controller
         ]);
     }
 
-    public function sidebar(?Article $article = null)
+    public function sidebar(?Article $article = null, ArticleCatalogue $catalogue)
     {
         // Récupération du Repository
         $repository = $this->getDoctrine()
             ->getRepository(Article::class);
 
         // Récupérer les 5 derniers articles
-        $articles = $repository->findLatestArticles();
+        #$articles = $repository->findLatestArticles();
+        $articles = $catalogue->findLatestArticles();
 
         // Récupérer les articles à la position "special"
         $specials = $repository->findSpecialArticles();
@@ -147,7 +160,7 @@ class IndexController extends Controller
         return $this->render('components/_sidebar.html.twig', [
             'articles' => $articles,
             'specials' => $specials,
-            'article'  => $article
+            'article' => $article
         ]);
     }
 }

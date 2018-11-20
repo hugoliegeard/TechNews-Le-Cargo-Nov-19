@@ -65,6 +65,8 @@ class Article
      */
     private $dateCreation;
 
+    private $sourceId;
+
     /**
      * Article constructor.
      */
@@ -84,6 +86,7 @@ class Article
      * @param Categorie $categorie
      * @param Membre $membre
      * @param \DateTime $dateCreation
+     * @param int|null $sourceId
      * @return Article
      */
     public static function create(
@@ -96,7 +99,8 @@ class Article
         bool $spotlight,
         Categorie $categorie,
         Membre $membre,
-        \DateTime $dateCreation
+        \DateTime $dateCreation,
+        ?int $sourceId = null
     )
     {
         $article = new self();
@@ -111,6 +115,7 @@ class Article
         $article->categorie = $categorie;
         $article->membre = $membre;
         $article->dateCreation = $dateCreation;
+        $article->sourceId = $sourceId;
 
         return $article;
     }
@@ -257,6 +262,22 @@ class Article
 
     public function isAuteur(?Membre $membre = null): bool {
         return $membre && $this->getMembre()->getId() === $membre->getId();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSourceId()
+    {
+        return $this->sourceId;
+    }
+
+    /**
+     * @param mixed $sourceId
+     */
+    public function setSourceId($sourceId)
+    {
+        $this->sourceId = $sourceId;
     }
 
 }

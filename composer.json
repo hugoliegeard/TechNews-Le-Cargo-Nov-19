@@ -25,6 +25,7 @@
         "symfony/twig-bundle": "*",
         "symfony/validator": "*",
         "symfony/yaml": "*",
+        "tightenco/collect": "^5.7",
         "twig/extensions": "^1.5"
     },
     "require-dev": {

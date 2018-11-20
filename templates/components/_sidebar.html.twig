@@ -76,7 +76,8 @@
                         <a href="{{ path('index_article', {
                             categorie: article.categorie.slug,
                             slug: article.slug,
-                            id: article.id
+                            id: article.id,
+                            sourceId: article.sourceId
                         }) }}">
                             <img alt="{{ article.titre | title }}"
                                  src="{{ asset('images/product/'~article.featuredImage) }}">
@@ -84,7 +85,8 @@
                         <h3><a href="{{ path('index_article', {
                                 categorie: article.categorie.slug,
                                 slug: article.slug,
-                                id: article.id
+                                id: article.id,
+                                sourceId: article.sourceId
                             }) }}">{{ article.titre | title }}</a></h3>
                         <div class="meta-post">
                             <a href="#">
@@ -164,14 +166,16 @@
                         <a href="{{ path('index_article', {
                             categorie: article.categorie.slug,
                             slug: article.slug,
-                            id: article.id
+                            id: article.id,
+                            sourceId: article.sourceId
                         }) }}">
                             <img alt="{{ article.titre | title }}" src="{{ asset('images/product/'~article.featuredImage) }}">
                         </a>
                         <h3><a href="{{ path('index_article', {
                                 categorie: article.categorie.slug,
                                 slug: article.slug,
-                                id: article.id
+                                id: article.id,
+                                sourceId: article.sourceId
                             }) }}">{{ article.titre | title }}</a></h3>
                         <div class="meta-post">
                             <a href="#">

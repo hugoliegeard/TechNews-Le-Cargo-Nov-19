@@ -4,12 +4,13 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @method Article|null find($id, $lockMode = null, $lockVersion = null)
  * @method Article|null findOneBy(array $criteria, array $orderBy = null)
- * @method Article[]    findAll()
+ * @method Article[]|iterable findAll()
  * @method Article[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ArticleRepository extends ServiceEntityRepository
@@ -32,8 +33,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->orderBy('a.id', 'DESC')
             ->setMaxResults(self::MAX_RESULTS)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function findArticlesSuggestions($idArticle, $idCategorie)
@@ -42,21 +42,16 @@ class ArticleRepository extends ServiceEntityRepository
             # Tous les articles d'une catégorie ($idCategorie)
             ->where('a.categorie = :category_id')
             ->setParameter('category_id', $idCategorie)
-
             # sauf un article ($idArticle)
             ->andWhere('a.id != :article_id')
             ->setParameter('article_id', $idArticle)
-
             # 3 Articles maximum
             ->setMaxResults(self::MAX_SUGGESTIONS)
-
             # par ordre décroissant
             ->orderBy('a.id', 'DESC')
-
             # On finalise
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -70,8 +65,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->orderBy('a.id', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -85,8 +79,23 @@ class ArticleRepository extends ServiceEntityRepository
             ->orderBy('a.id', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+    }
+
+    /**
+     * Compte le nombre d'article
+     * dans la BDD.
+     */
+    public function countArticles()
+    {
+        try {
+            return $this->createQueryBuilder('a')
+                        ->select('COUNT(a)')
+                        ->getQuery()
+                        ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
 }
