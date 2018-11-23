@@ -43,22 +43,25 @@ class ArticleCatalogue implements ArticleCatalogueInterface
         /** @var ArticleAbstractSource $source */
         foreach ($this->sources as $source) {
 
-            if($source->getSourceId() == $sourceId) {
-                $article = $source->find($id);
-                $articles[] = $article;
+            if (null !== $sourceId) {
+                if ($source->getSourceId() == $sourceId) {
+                    return $source->find($id);
+                }
             }
+
+            $article = $source->find($id);
 
             # Si ma source ne renvoi pas null
             # alors je l'ajoute au tableau
-//            if (null !== $article) {
-//                $articles[] = $article;
-//            }
+            if (null !== $article) {
+                $articles[] = $article;
+            }
 
             # Vérification des doublons
-            if($articles->count() > 1) {
+            if ($articles->count() > 1) {
                 throw new DuplicateCatalogueArticleException(sprintf(
-                   'Return value of %s cannot return more than one record on line %s',
-                   get_class($this).'::'.__FUNCTION__.'()', __LINE__
+                    'Return value of %s cannot return more than one record on line %s',
+                    get_class($this) . '::' . __FUNCTION__ . '()', __LINE__
                 ));
             }
         }
@@ -76,10 +79,9 @@ class ArticleCatalogue implements ArticleCatalogueInterface
     public function findAll(): ?iterable
     {
         return $this->sourcesIterator('findAll')
-            ->sortByDesc(function($col) {
+            ->sortByDesc(function ($col) {
                 return $col->getDateCreation();
-            })
-            ->sortBy('dateCreation');
+            });
     }
 
     /**
@@ -90,7 +92,7 @@ class ArticleCatalogue implements ArticleCatalogueInterface
     public function findLatestArticles(): ?iterable
     {
         return $this->sourcesIterator('findLatestArticles')
-            ->sortByDesc(function($col) {
+            ->sortByDesc(function ($col) {
                 return $col->getDateCreation();
             })
             ->slice(-5);

@@ -2,33 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="543971d7-da37-4916-9df3-d6e2aefc5720" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Article/ArticleAbstractSource.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Article/ArticleCatalogue.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Article/ArticleCatalogueInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Article/ArticleRepositoryInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Article/Source/DoctrineSource.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Article/Source/YamlSource.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Article/Warmer/YamlCacheWarmer.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CompilerPass/RegisterArticleSourcePass.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Exception/DuplicateCatalogueArticleException.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/services.yaml" afterPath="$PROJECT_DIR$/config/services.yaml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Article/Provider/YamlProvider.php" afterPath="$PROJECT_DIR$/src/Article/Provider/YamlProvider.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Article/Provider/articles.yaml" afterPath="$PROJECT_DIR$/src/Article/Provider/articles.yaml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Controller/TechNews/IndexController.php" afterPath="$PROJECT_DIR$/src/Controller/TechNews/IndexController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Entity/Article.php" afterPath="$PROJECT_DIR$/src/Entity/Article.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Entity/Categorie.php" afterPath="$PROJECT_DIR$/src/Entity/Categorie.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Entity/Membre.php" afterPath="$PROJECT_DIR$/src/Entity/Membre.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Kernel.php" afterPath="$PROJECT_DIR$/src/Kernel.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Repository/ArticleRepository.php" afterPath="$PROJECT_DIR$/src/Repository/ArticleRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/symfony.lock" afterPath="$PROJECT_DIR$/symfony.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/components/_sidebar.html.twig" afterPath="$PROJECT_DIR$/templates/components/_sidebar.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/components/_spotlight-thumbs.html.twig" afterPath="$PROJECT_DIR$/templates/components/_spotlight-thumbs.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/components/_spotlight.html.twig" afterPath="$PROJECT_DIR$/templates/components/_spotlight.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/components/_suggestions.html.twig" afterPath="$PROJECT_DIR$/templates/components/_suggestions.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/index/categorie.html.twig" afterPath="$PROJECT_DIR$/templates/index/categorie.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Article/ArticleCatalogue.php" afterPath="$PROJECT_DIR$/src/Article/ArticleCatalogue.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -73,8 +48,8 @@
       <file leaf-file-name="ArticleCatalogue.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Article/ArticleCatalogue.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="47" column="39" lean-forward="false" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
+            <state relative-caret-position="1967">
+              <caret line="83" column="14" lean-forward="false" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
               <folding>
                 <element signature="e#32#55#0#PHP" expanded="true" />
               </folding>
@@ -152,7 +127,6 @@
         <option value="$PROJECT_DIR$/src/Exception/DuplicateCatalogueArticleException.php" />
         <option value="$PROJECT_DIR$/src/Article/ArticleAbstractSource.php" />
         <option value="$PROJECT_DIR$/src/Article/ArticleRepositoryInterface.php" />
-        <option value="$PROJECT_DIR$/src/Article/ArticleCatalogue.php" />
         <option value="$PROJECT_DIR$/src/Article/Source/DoctrineSource.php" />
         <option value="$PROJECT_DIR$/src/Entity/Article.php" />
         <option value="$PROJECT_DIR$/src/Article/Source/YamlSource.php" />
@@ -162,6 +136,7 @@
         <option value="$PROJECT_DIR$/templates/components/_suggestions.html.twig" />
         <option value="$PROJECT_DIR$/templates/index/categorie.html.twig" />
         <option value="$PROJECT_DIR$/src/Controller/TechNews/IndexController.php" />
+        <option value="$PROJECT_DIR$/src/Article/ArticleCatalogue.php" />
       </list>
     </option>
   </component>
@@ -177,7 +152,7 @@
     </layout>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="x" value="1920" />
     <option name="width" value="1920" />
     <option name="height" value="1080" />
@@ -287,12 +262,20 @@
       <workItem from="1542184044466" duration="23796000" />
       <workItem from="1542271500438" duration="14294000" />
       <workItem from="1542356871400" duration="790000" />
-      <workItem from="1542363487633" duration="25212000" />
+      <workItem from="1542363487633" duration="26260000" />
     </task>
+    <task id="LOCAL-00001" summary="Travail du 20/11/19&#10;Mise en Place du Mediateur&#10;Technews accepte plusieurs sources.">
+      <created>1542730630265</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1542730630265</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="163031000" />
+    <option name="totallyTimeSpent" value="164079000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -304,7 +287,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -356,6 +339,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Travail du 20/11/19&#10;Mise en Place du Mediateur&#10;Technews accepte plusieurs sources." />
+    <option name="LAST_COMMIT_MESSAGE" value="Travail du 20/11/19&#10;Mise en Place du Mediateur&#10;Technews accepte plusieurs sources." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1716,8 +1703,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Article/ArticleCatalogue.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="47" column="39" lean-forward="false" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
+        <state relative-caret-position="1967">
+          <caret line="83" column="14" lean-forward="false" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
           <folding>
             <element signature="e#32#55#0#PHP" expanded="true" />
           </folding>
