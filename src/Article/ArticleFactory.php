@@ -7,6 +7,19 @@ use App\Entity\Article;
 
 class ArticleFactory
 {
+
+    private $sourceId;
+
+    /**
+     * ArticleFactory constructor.
+     * @param string $sourceId
+     */
+    public function __construct(string $sourceId)
+    {
+        $this->sourceId = $sourceId;
+    }
+
+
     /**
      * Création d'un Objet Article à partir d'un Article Request.
      * Pour insertion en BDD.
@@ -25,7 +38,9 @@ class ArticleFactory
             $request->getSpotlight(),
             $request->getCategorie(),
             $request->getMembre(),
-            $request->getDateCreation()
+            $request->getDateCreation(),
+            $this->sourceId,
+            $request->getStatus()
         );
     }
 }

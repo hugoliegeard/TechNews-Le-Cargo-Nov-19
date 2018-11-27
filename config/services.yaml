@@ -7,6 +7,7 @@ parameters:
     articles_dir: 'images/product'
     articles_assets_dir: '%kernel.project_dir%/public/%articles_dir%'
     locale: 'fr'
+    doctrine_source_id: '644751'
 
 services:
     # default configuration for services in *this* file
@@ -38,6 +39,14 @@ services:
     App\Article\ArticleRequestUpdateHandler:
         arguments:
             $articleAssetsDir: '%articles_assets_dir%'
+
+    App\Article\Source\DoctrineSource:
+        arguments:
+            $sourceId: '%doctrine_source_id%'
+
+    App\Article\ArticleFactory:
+            arguments:
+                $sourceId: '%doctrine_source_id%'
 
     # Solution I
     # App\Article\ArticleCatalogue:

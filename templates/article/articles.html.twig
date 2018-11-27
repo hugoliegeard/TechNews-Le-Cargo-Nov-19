@@ -1,0 +1,172 @@
+{% extends 'layout.html.twig' %}
+
+{% set active = titre %}
+
+{% block page_title %}
+    {{ titre | title }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!--colleft-->
+        <div class="col-md-8 col-sm-12">
+
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% if articles is not empty %}
+                <div class="box-caption">
+                    <span>{{ titre | title }}</span>
+                </div>
+                {#{{ dump(app.request) }}#}
+                <!--list-news-cate-->
+                <div class="list-news-cate">
+                    {% for article in articles %}
+
+                        <article class="news-cate-item">
+                            <div class="row">
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                    <a href="{{ path('index_article', {
+                                        categorie: article.categorie.slug,
+                                        slug: article.slug,
+                                        id: article.id,
+                                        sourceId: article.sourceId
+                                    }) }}">
+                                        <img alt="{{ article.titre | title }}"
+                                             src="{{ asset('images/product/'~article.featuredImage) }}">
+                                    </a>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                    <h3><a href="{{ path('index_article', {
+                                            categorie: article.categorie.slug,
+                                            slug: article.slug,
+                                            id: article.id,
+                                            sourceId: article.sourceId
+                                        }) }}">{{ article.titre | title }}</a></h3>
+                                    <div class="meta-post">
+                                        <a href="#">
+                                            {{ article.membre.prenom ~ ' ' ~ article.membre.nom }}
+                                        </a>
+                                        <em></em>
+                                        <span>
+                                        {{ article.dateCreation | date('d/m/Y') }}
+                                    </span>
+                                    </div>
+                                    {{ article.contenu | summary }}
+                                </div>
+                                <div class="col-xs-12">
+                                    {% if is_granted('ROLE_AUTEUR') %}
+                                        {% if workflow_can(article, 'to_approval') %}
+                                            <a class="btn btn-primary"
+                                               href="{{ path('article_workflow', {
+                                                   'id' : article.id,
+                                                   'status' : 'to_approval',
+                                                   'redirect': app.request.get('_route')
+                                               }) }}">{{ 'Envoyer au rédacteur en chef' | trans }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if is_granted('ROLE_EDITEUR') %}
+                                        {% if workflow_can(article, 'editor_ok') %}
+                                            <a class="btn btn-success"
+                                               href="{{ path('article_workflow', {
+                                                   'id' : article.id,
+                                                   'status' : 'editor_ok',
+                                                   'redirect': app.request.get('_route')
+                                               }) }}">{{ 'Approuver et demander la publication' | trans }}</a>
+                                        {% endif %}
+                                        {% if workflow_can(article, 'editor_fail') %}
+                                            <a class="btn btn-warning"
+                                               href="{{ path('article_workflow', {
+                                                   'id' : article.id,
+                                                   'status' : 'editor_fail',
+                                                   'redirect': app.request.get('_route')
+                                               }) }}">{{ 'Renvoyer pour révision' | trans }}</a>
+                                        {% endif %}
+                                        {% if workflow_can(article, 'editor_refused') %}
+                                            <a class="btn btn-danger"
+                                               href="{{ path('article_workflow', {
+                                                   'id' : article.id,
+                                                   'status' : 'editor_refused',
+                                                   'redirect': app.request.get('_route')
+                                               }) }}">{{ 'Refuser et Annuler' | trans }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if is_granted('ROLE_CORRECTEUR') %}
+                                        {% if workflow_can(article, 'corr_approuved') %}
+                                            <a class="btn btn-success"
+                                               href="{{ path('article_workflow', {
+                                                   'id' : article.id,
+                                                   'status' : 'corr_approuved',
+                                                   'redirect': app.request.get('_route')
+                                               }) }}">{{ 'Valider la correction' | trans }}</a>
+                                        {% endif %}
+                                        {% if workflow_can(article, 'corr_failure') %}
+                                            <a class="btn btn-warning"
+                                               href="{{ path('article_workflow', {
+                                                   'id' : article.id,
+                                                   'status' : 'corr_failure',
+                                                   'redirect': app.request.get('_route')
+                                               }) }}">{{ 'Problème de correction' | trans }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if is_granted('ROLE_CORRECTEUR') %}
+                                        {% if workflow_can(article, 'pub_approuved') %}
+                                            <a class="btn btn-success"
+                                               href="{{ path('article_workflow', {
+                                                   'id' : article.id,
+                                                   'status' : 'pub_approuved',
+                                                   'redirect': app.request.get('_route')
+                                               }) }}">{{ 'Valider la publication' | trans }}</a>
+                                        {% endif %}
+                                        {% if workflow_can(article, 'pub_failure') %}
+                                            <a class="btn btn-warning"
+                                               href="{{ path('article_workflow', {
+                                                   'id' : article.id,
+                                                   'status' : 'pub_failure',
+                                                   'redirect': app.request.get('_route')
+                                               }) }}">{{ 'Reporter la Publication' | trans }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-danger">
+                    <strong>Aucune publication pour le moment</strong>
+                </div>
+
+            {% endif %}
+
+            {#<div class="paging">
+                <a href="#">Prev</a>
+                <a href="#" class="current">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">Next</a>
+            </div>#}
+
+        </div>
+        {# Sidebar #}
+        {#{% include 'components/_sidebar.html.twig' %}#}
+        {{ render(controller('App\\Controller\\TechNews\\IndexController::sidebar')) }}
+    </div>
+{% endblock %}
+
+

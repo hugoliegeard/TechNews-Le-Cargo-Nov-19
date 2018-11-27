@@ -1,4 +1,6 @@
 role.admin: Administrateur
-role.editor: Editeur
+role.editor: Redac. Chef
 role.author: Auteur
 role.member: Membre
+role.publisher: Resp. Publication
+role.correcteur: Correcteur

@@ -6,6 +6,7 @@ use App\Article\ArticleRequest;
 use App\Article\ArticleRequestHandler;
 use App\Article\ArticleRequestUpdateHandler;
 use App\Article\ArticleType;
+use App\Article\ArticleWorkflowHandler;
 use App\Controller\HelperTrait;
 use App\Entity\Article;
 use App\Entity\Categorie;
@@ -16,6 +17,7 @@ use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Workflow\Exception\LogicException;
 
 class ArticleController extends Controller
 {
@@ -131,7 +133,8 @@ class ArticleController extends Controller
                 return $this->redirectToRoute('index_article', [
                     'categorie' => $article->getCategorie()->getSlug(),
                     'slug' => $article->getSlug(),
-                    'id' => $article->getId()
+                    'id' => $article->getId(),
+                    'sourceId' => $article->getSourceId()
                 ]);
             } else {
 
@@ -205,6 +208,162 @@ class ArticleController extends Controller
         return $this->render('article/form.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * Afficher les articles en attente de soumission
+     * @Route({
+     *     "fr" : "/mes-articles/en-attente",
+     *     "en" : "/my-articles/pending"
+     * }, name="article_pending")
+     * @Security("has_role('ROLE_AUTEUR')")
+     */
+    public function pendingArticles() {
+
+        # Récupération de l'auteur
+        $membre = $this->getUser();
+
+        # Récupération des Articles
+        $articles = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findAuthorArticlesByStatus($membre->getId(), 'review');
+
+        # Affichage dans la vue
+        return $this->render('article/articles.html.twig', [
+            'articles' => $articles,
+            'titre'    => 'Mes Articles en Attente'
+        ]);
+    }
+
+    /**
+ * Afficher les articles en attente de soumission
+ * @Route({
+ *     "fr" : "/mes-articles",
+ *     "en" : "/my-articles"
+ * }, name="article_published")
+ * @Security("has_role('ROLE_AUTEUR')")
+ */
+    public function publishedArticles() {
+
+        # Récupération de l'auteur
+        $membre = $this->getUser();
+
+        # Récupération des Articles
+        $articles = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findAuthorArticlesByStatus($membre->getId(), 'published');
+
+        # Affichage dans la vue
+        return $this->render('article/articles.html.twig', [
+            'articles' => $articles,
+            'titre'    => 'Mes Articles en Publiés'
+        ]);
+    }
+
+    /**
+ * Afficher les articles en attente de validation
+ * @Route({
+ *     "fr" : "/les-articles/en-attente-de-validation",
+ *     "en" : "/articles/pending-approval"
+ * }, name="article_approval")
+ * @Security("has_role('ROLE_EDITEUR')")
+ */
+    public function approvalArticles() {
+
+        # Récupération des Articles
+        $articles = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findArticlesByStatus('editor');
+
+        # Affichage dans la vue
+        return $this->render('article/articles.html.twig', [
+            'articles' => $articles,
+            'titre'    => 'En Attente de Validation'
+        ]);
+    }
+
+    /**
+     * Afficher les articles en attente de correction
+     * @Route({
+     *     "fr" : "/les-articles/en-attente-de-correction",
+     *     "en" : "/articles/pending-correction"
+     * }, name="article_corrector")
+     * @Security("has_role('ROLE_CORRECTEUR')")
+     */
+    public function correctorArticles() {
+
+        # Récupération des Articles
+        $articles = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findArticlesByStatus('corrector');
+
+        # Affichage dans la vue
+        return $this->render('article/articles.html.twig', [
+            'articles' => $articles,
+            'titre'    => 'En Attente de Correction'
+        ]);
+    }
+
+    /**
+     * Afficher les articles en attente de publication
+     * @Route({
+     *     "fr" : "/les-articles/en-attente-de-publication",
+     *     "en" : "/articles/pending-publication"
+     * }, name="article_publisher")
+     * @Security("has_role('ROLE_PUBLISHER')")
+     */
+    public function publisherArticles() {
+
+        # Récupération des Articles
+        $articles = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findArticlesByStatus('publisher');
+
+        # Affichage dans la vue
+        return $this->render('article/articles.html.twig', [
+            'articles' => $articles,
+            'titre'    => 'En Attente de Publication'
+        ]);
+    }
+
+    /**
+     * Permet de changer le statut d'un article
+     * @Route("/workflow/{status}/{id}", name="article_workflow")
+     * @Security("has_role('ROLE_AUTEUR')")
+     * @param $status
+     * @param Article $article
+     * @param Request $request
+     * @param ArticleWorkflowHandler $awh
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function workflow($status,
+                             Article $article,
+                             Request $request,
+                             ArticleWorkflowHandler $awh)
+    {
+        # Traitement du Workflow
+        try {
+
+            $awh->handle($article, $status);
+
+            # Notification
+            $this->addFlash('notice',
+                'Votre article à bien été transmis. Merci.');
+
+        } catch (LogicException $e) {
+
+            # Notification
+            $this->addFlash('error',
+                'Changement de status impossible.');
+
+        }
+
+        # Récupération du Redirect
+        $redirect = $request->get('redirect') ?? 'index';
+
+        # On redirige l'utilisateur sur la bonne page
+        return $this->redirectToRoute($redirect);
+
     }
 
 }

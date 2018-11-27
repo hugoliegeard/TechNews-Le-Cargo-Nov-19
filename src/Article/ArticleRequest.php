@@ -45,6 +45,7 @@ class ArticleRequest
     private $categorie;
     private $membre;
     private $dateCreation;
+    private $status;
 
     /**
      * ArticleRequest constructor.
@@ -82,6 +83,7 @@ class ArticleRequest
         $ar->spotlight = $article->getSpotlight();
         $ar->dateCreation = $article->getDateCreation();
         $ar->categorie = $article->getCategorie();
+        $ar->status = $article->getStatus();
 
         return $ar;
     }
@@ -262,5 +264,19 @@ class ArticleRequest
         $this->dateCreation = $dateCreation;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
 }

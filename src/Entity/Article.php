@@ -65,7 +65,12 @@ class Article
      */
     private $dateCreation;
 
-    private $sourceId;
+    private $sourceId = '644751';
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $status;
 
     /**
      * Article constructor.
@@ -87,6 +92,7 @@ class Article
      * @param Membre $membre
      * @param \DateTime $dateCreation
      * @param int|null $sourceId
+     * @param iterable $status
      * @return Article
      */
     public static function create(
@@ -100,7 +106,8 @@ class Article
         Categorie $categorie,
         Membre $membre,
         \DateTime $dateCreation,
-        ?int $sourceId = null
+        ?int $sourceId = null,
+        iterable $status = []
     )
     {
         $article = new self();
@@ -116,6 +123,7 @@ class Article
         $article->membre = $membre;
         $article->dateCreation = $dateCreation;
         $article->sourceId = $sourceId;
+        $article->status = $status;
 
         return $article;
     }
@@ -280,4 +288,19 @@ class Article
         $this->sourceId = $sourceId;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
 }

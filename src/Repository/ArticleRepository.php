@@ -90,9 +90,83 @@ class ArticleRepository extends ServiceEntityRepository
     {
         try {
             return $this->createQueryBuilder('a')
-                        ->select('COUNT(a)')
-                        ->getQuery()
-                        ->getSingleScalarResult();
+                ->select('COUNT(a)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Récupérer tous les articles d'un Auteur par Statut
+     * @param int $idMembre
+     * @param string $status
+     * @return mixed
+     */
+    public function findAuthorArticlesByStatus(int $idMembre, string $status)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.membre = :membre_id')
+            ->setParameter('membre_id', $idMembre)
+            ->andWhere('a.status LIKE :status')
+            ->setParameter('status', "%$status%")
+            ->orderBy('a.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Récupérer tous les articles par Statut
+     * @param string $status
+     * @return mixed
+     */
+    public function findArticlesByStatus(string $status)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.status LIKE :status')
+            ->setParameter('status', "%$status%")
+            ->orderBy('a.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Compter les articles d'un Auteur par Statut
+     * @param int $idMembre
+     * @param string $status
+     * @return mixed
+     */
+    public function countAuthorArticlesByStatus(int $idMembre, string $status)
+    {
+        try {
+            return $this->createQueryBuilder('a')
+                ->select('COUNT(a)')
+                ->where('a.membre = :membre_id')
+                ->setParameter('membre_id', $idMembre)
+                ->andWhere('a.status LIKE :status')
+                ->setParameter('status', "%$status%")
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Compter les articles par Statut
+     * @param string $status
+     * @return mixed
+     */
+    public function countArticlesByStatus(string $status)
+    {
+        try {
+            return $this->createQueryBuilder('a')
+                ->select('COUNT(a)')
+                ->where('a.status LIKE :status')
+                ->setParameter('status', "%$status%")
+                ->getQuery()
+                ->getSingleScalarResult();
         } catch (NonUniqueResultException $e) {
             return 0;
         }

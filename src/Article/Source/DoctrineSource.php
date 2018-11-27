@@ -10,13 +10,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 class DoctrineSource extends ArticleAbstractSource
 {
 
-    protected $sourceId = '644751';
+    protected $sourceId;
     private $repository;
     private $entity = Article::class;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager, string $sourceId)
     {
         $this->repository = $manager->getRepository($this->entity);
+        $this->sourceId = $sourceId;
     }
 
     /**

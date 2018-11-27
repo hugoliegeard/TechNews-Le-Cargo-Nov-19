@@ -1,6 +1,11 @@
 sidebar.hello: Bonjour
 sidebar.article.edit: 'Editer cet article'
 sidebar.article.new: 'Rédiger un article'
+sidebar.article.pending: 'Mes articles en attente'
+sidebar.article.published: 'Mes articles publiés'
+sidebar.article.approval: 'En attente de validation'
+sidebar.article.corrector: 'En attente de correction'
+sidebar.article.publisher: 'En attente de publication'
 sidebar.lastpublications: 'Dernières Publications'
 sidebar.newsletter.title: 'Infos Lettre'
 sidebar.newsletter.description: 'Inscrivez-vous pour recevoir nos dernières publications.'
